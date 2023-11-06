@@ -4,14 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { onChangeName } from 'components/Redux/filterSlice';
 
 export const Filter = () => {
-  const el = useSelector(state => state.filter);
+  const element = useSelector(state => state.filter);
   const dispatch = useDispatch();
   return (
     <Wrapper>
       <EntryField>Find contacts by name</EntryField>
       <input
         type="text"
-        value={el.name}
+        value={element.name}
         onChange={evt => dispatch(onChangeName(evt.target.value))}
         placeholder="Enter name plz"
       />

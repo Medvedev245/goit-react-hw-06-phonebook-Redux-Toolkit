@@ -4,8 +4,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { onDelete } from 'components/Redux/contactsSlice';
 
 export const ContactList = () => {
-  const value = useSelector(state => state.contacts.contacts);
-  const nameFromFilter = useSelector(state => state.filter) || '';
+  // const value = useSelector(state => state.contacts.contacts);
+  const value = useSelector(getContacts);
+  function getContacts(state) {
+    return state.contacts.contacts;
+  }
+
+  const nameFromFilter = useSelector(state => state.filter);
   const filteredContacts = value.filter(({ name }) =>
     name.toLowerCase().includes(nameFromFilter.toLowerCase())
   );

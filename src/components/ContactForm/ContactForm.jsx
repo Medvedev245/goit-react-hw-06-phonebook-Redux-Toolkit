@@ -1,13 +1,14 @@
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import {
   EntryField,
   FormikContainer,
   Button,
   FormLabel,
 } from './ContactForm.styled';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addContacts } from 'components/Redux/contactsSlice';
 
 const nameSchema = Yup.object().shape({
@@ -17,7 +18,11 @@ const nameSchema = Yup.object().shape({
     .required('Required'),
 });
 
-export const ContactForm = props => {
+export const ContactForm = () => {
+  const value = useSelector(getContacts);
+  function getContacts(state) {
+    return state.contacts.contacts;
+  }
   const dispatch = useDispatch();
 
   return (
@@ -29,8 +34,16 @@ export const ContactForm = props => {
         }}
         validationSchema={nameSchema}
         onSubmit={(values, actions) => {
-          dispatch(addContacts(values));
-          actions.resetForm();
+          const existingContact = value.some(
+            contact => contact.name.toLowerCase() === values.name.toLowerCase()
+          );
+          if (existingContact) {
+            Notify.failure('Contact already exists');
+          } else {
+            Notify.success('Contact ADD');
+            dispatch(addContacts(values));
+            actions.resetForm();
+          }
         }}
       >
         <Form>

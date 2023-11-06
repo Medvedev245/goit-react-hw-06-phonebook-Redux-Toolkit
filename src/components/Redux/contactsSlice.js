@@ -19,51 +19,16 @@ const contactSlise = createSlice({
     onDelete(state, action) {
       state.contacts = state.contacts.filter(el => el.id !== action.payload);
     },
-    addContacts(state, action) {
-      const existingContact = state.contacts.some(
-        contact =>
-          contact.name.toLowerCase() === action.payload.name.toLowerCase()
-      );
-      if (existingContact) {
-        Notify.failure('Contact already exists');
-        return state; // если контакт уже существует, возвращаем текущее состояние
-      } else {
-        Notify.success('Contact ADD');
-        return {
-          contacts: [...state.contacts, { ...action.payload, id: nanoid(5) }],
-        };
-      }
+    addContacts: {
+      reducer(state, action) {
+        state.contacts.push(action.payload);
+      },
+      prepare(contact) {
+        return { payload: { ...contact, id: nanoid(5) } };
+      },
     },
-    ////// dont work :(
-    // addContacts: {
-    //   reducer(state, action) {
-    //     const existingContact = state.contacts.some(
-    //       contact =>
-    //         contact.name.toLowerCase() === action.payload.name.toLowerCase()
-    //     );
-    //     if (existingContact) {
-    //       Notify.failure('Contact already exists');
-    //       return state; // если контакт уже существует, возвращаем текущее состояние
-    //     } else {
-    //       Notify.success('Contact ADD');
-    //       return {
-    //         contacts: [...state.contacts, { ...action.payload, id: nanoid(5) }],
-    //       };
-    //     }
-    //   },
-    //   prepare(value) {
-    //     return {
-    //       payload: {
-    //         value,
-    //         id: nanoid(5),
-    //       },
-    //     };
-    //   },
-    // },
   },
 });
 
 export const contactReducer = contactSlise.reducer;
 export const { onDelete, addContacts } = contactSlise.actions;
-
-// console.log(addContacts({ name: 'alice', number: '345 - 45 - 45' }));
