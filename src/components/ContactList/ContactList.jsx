@@ -6,6 +6,7 @@ import { onDelete } from 'components/Redux/contactsSlice';
 export const ContactList = () => {
   // const value = useSelector(state => state.contacts.contacts);
   const value = useSelector(getContacts);
+  console.log(value);
   function getContacts(state) {
     return state.contacts.contacts;
   }

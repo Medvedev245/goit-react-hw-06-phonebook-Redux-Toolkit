@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { persistReducer } from 'redux-persist';
 import { nanoid } from 'nanoid';
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import storage from 'redux-persist/lib/storage';
 
 const contactsInitialState = {
   contacts: [
@@ -29,6 +30,18 @@ const contactSlise = createSlice({
     },
   },
 });
+////slice - contactSlise
+export const contactsReducer = contactSlise.reducer;
 
+const persistConfig = {
+  key: 'root',
+  storage,
+};
+
+export const persistedContactsReducer = persistReducer(
+  persistConfig,
+  contactsReducer
+);
+////
 export const contactReducer = contactSlise.reducer;
 export const { onDelete, addContacts } = contactSlise.actions;
