@@ -3,7 +3,6 @@ import { persistedContactsReducer } from './contactsSlice';
 import { filterReducer } from './filterSlice';
 import {
   persistStore,
-  persistReducer,
   FLUSH,
   REHYDRATE,
   PAUSE,
